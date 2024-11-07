@@ -5,6 +5,10 @@ if [ -z "$1" ]; then
 	exit 1
 fi
 
+if [ -z "${JAVA_HOME}" ]; then
+	echo "Use must define JAVA_HOME to continue"
+	exit 1
+fi
 
 SOURCE_DIR=`dirname $0`
 BUILD_DIR="$1"
@@ -12,12 +16,10 @@ BUILD_DIR="$1"
 OS="$(uname | tr '[:upper:]' '[:lower:]')"
 if [ "${OS}" = "darwin" ]; then
     # macOS
-    JAVA_HOME="$(/usr/libexec/java_home)"
-		OUTPUT_FILE='libcoccoc_tokenizer_jni.dylib'
+    OUTPUT_FILE='libcoccoc_tokenizer_jni.dylib'
   else
-    JAVA_HOME="$(dirname $(dirname $(readlink -f $(which javac))))"
-		OUTPUT_FILE='libcoccoc_tokenizer_jni.so'
-  fi
+    OUTPUT_FILE='libcoccoc_tokenizer_jni.so'
+fi
 
 
 mkdir -p ${BUILD_DIR}/java
